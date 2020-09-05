@@ -28,9 +28,9 @@ public class EchoServer {
 
     private void start() {
         final EchoServerHandler serverHandler = new EchoServerHandler();
+        ServerBootstrap server = new ServerBootstrap();
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-            ServerBootstrap server = new ServerBootstrap();
             server.group(group)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
@@ -41,10 +41,7 @@ public class EchoServer {
                         }
                     });
 
-            ChannelFuture future = null;
-
-            future = server.bind().sync();
-
+            ChannelFuture future = server.bind().sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -55,6 +52,6 @@ public class EchoServer {
                 e.printStackTrace();
             }
         }
-
     }
+
 }
