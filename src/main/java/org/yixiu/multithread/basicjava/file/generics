@@ -1,0 +1,142 @@
+泛型
+    泛型的类型擦除
+        泛型只在编译阶段有效,泛型类型在逻辑上可看成是多个不同的类型，但是其实质都是同一个数据类型
+        编译之后程序会采取去泛型化的措施
+        示例：
+            // 指定能够存放的数据类型 统一类型防止出现 类型转换异常
+            List<String> list = new ArrayList();
+            list.add("hello");
+            //list.add(new Object());//这里是不能直接添加 new Object() 的
+            for (Object obj: list) {
+                System.out.println((String)obj);
+            }
+            // 通过反射的方式添加数据到集合中
+            Class<? extends List> aClass = list.getClass();
+            Method method = aClass.getDeclaredMethod("add", Object.class);
+            method.invoke(list,new Object());
+            System.out.println(list);
+
+    泛型通配符
+        无边界通配符 ?
+            public static void main(String[] args) {
+                List<String> list = new ArrayList<>();
+                list.add("Mike");
+                list.add("Bob");
+                list.add("Mary");
+                loop(list);
+            }
+
+            public static void loop(List<?> list){//可以匹配任意类型的list
+                for (int i = 0; i < list.size() ; i++) {
+                    System.out.println(list.get(i));
+                }
+            }
+
+        上边界通配符  ? extends
+            public static void main(String[] args) {
+                List<Number> list = new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+                loop(list);
+            }
+
+            /**
+             *  ? extends Number : 通用的类型必须是Number及其子类
+             * @param list
+             */
+            public static void loop(List<? extends Number> list){
+                for (int i = 0; i < list.size() ; i++) {
+                    System.out.println(list.get(i));
+                }
+            }
+
+        下边界通配符  ? super
+            public static void main(String[] args) {
+                List<Number> list = new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+                loop(list);
+            }
+
+            /**
+             *  ?  super Number : 通用类型必须是Integer 到Object类型的对象
+             * @param list
+             */
+            public static void loop(List<? super Integer> list){
+                for (int i = 0; i < list.size() ; i++) {
+                    System.out.println(list.get(i));
+                }
+            }
+
+    泛型的具体使用
+        泛型跟我们的成员属性一样,需要先声明才能使用。泛型的声明采用 <> 进行声明。
+        申明一般约定采用单个大写字母表示，常用的有 K  E  T  V 等等字符。字符没有特殊含义，仅作为声明。
+        示例：
+            public <T> T fun1(T t){//必须先声明 <T> ，才可使用 T
+                return t;
+            }
+
+        泛型类
+            public class Person <T> {
+
+                private T t;
+
+                public PersonNew(T t) {
+                    this.t = t;
+                }
+
+                public T getT() {
+                    return t;
+                }
+
+                public void setT(T t) {
+                    this.t = t;
+                }
+            }
+
+        泛型方法
+            public class Demo <K,V> {
+
+                /**
+                 * 普通方法 可以使用 类中定义的泛型
+                 * @param k
+                 * @param v
+                 * @return
+                 */
+                public K method1(K k,V v){
+                    return (K)null;
+                }
+
+                /**
+                 * 普通方法  使用方法中定义的泛型
+                 * @param t
+                 * @param v
+                 * @param <T>
+                 * @return
+                 */
+                public <T> T method2(T t,V v){
+                    return (T)null;
+                }
+
+                /**
+                 * 在静态方法中我们没法使用 类中定义的泛型
+                 * @return
+                 */
+                public static <K> K method3(){
+                    return null;
+                }
+            }
+
+        泛型接口
+            public interface CalGeneric <T> {
+
+                T add(T a,T b);
+
+                T sub(T a,T b);
+
+                T mul(T a,T b);
+
+                T div(T a,T b);
+            }

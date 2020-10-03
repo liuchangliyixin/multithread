@@ -1,0 +1,131 @@
+反射
+    指在Java程序运行状态中，
+    1.对于给定的一个类(Class)对象，可以获得这个类(Class)对象的所有属性和方法；
+    2.对于给定的一个对象(new XXXClassName<? extends Object>)，都能够调用它的任意一个属性和方法.
+
+    这种动态获取类的内容以及动态调用对象的方法和获取属性的机制，就叫做JAVA的反射机制。
+
+    示例：
+        // 获取一个类对象
+        Class<User> clazz = User.class;
+        // 获取类对象对应的属性或者方法
+        System.out.println(clazz.getName());
+        System.out.println(clazz.getPackage());
+        System.out.println(clazz.getClassLoader());
+        System.out.println(clazz.getSuperclass());
+        User user = clazz.newInstance();// 获取一个实例对象
+        // 获取类型中的方法
+        Method method = clazz.getDeclaredMethod("jump");
+        // 通过反射执行方法
+        method.invoke(user);
+
+    反射的优缺点
+        优势
+            增加程序的灵活性，避免将固有的逻辑程序写死到代码里
+            代码简洁,可读性强，可提高代码的复用率
+        缺点
+            相较直接调用在量大的情景下反射性能下降
+            内部暴露和安全隐患
+        示例：
+            public static Ball getInstanceReflectByKey(String key){
+                String basePackage = "com.fs";
+                Ball ball = null;
+                try {
+                    Class clazz = Class.forName(basePackage+"."+key); // 类型的全路径
+                    ball = (Ball)clazz.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return ball;
+            }
+
+    反射慢在原因
+        寻找类Class字节码的过程
+        安全管理机制的权限验证等
+        若需要调用native方法调用时JNI接口的使用
+
+    反射的基本操作
+        获取类对象的四种方式
+            Class clazz = Person.class;
+            Class clazz2 = new Person().getClass();
+            Class clazz3 = Class.forName("com.example.demo.fashe.Person");
+            Class clazz4 = Demo02.class.getClassLoader().loadClass("com.example.demo.fashe.Person");
+
+        基本信息操作
+            // 获取类的相关结构
+            int modifier = clazz.getModifiers(); // 获取类修饰符
+            Package aPackage = clazz.getPackage(); // 获取类包名
+            String fullClassName = clazz.getName(); // 获取类的全路径名称
+            String simpleName = clazz.getSimpleName(); // 获取类的简单名称
+            ClassLoader classLoader = clazz.getClassLoader(); // 获取类加载器
+            Class[] interfaces = clazz.getInterfaces(); // 获取类实现的接口列表
+            Class superclass = clazz.getSuperclass(); // 获取类的父类
+            Annotation[] annotations = clazz.getAnnotations(); // 获取类的注解信息
+
+        类的属性操作
+            Person person = (Person) clazz.newInstance();
+            // 获取类中所有的公有字段 包含继承的字段
+            Field[] fields = clazz.getFields();
+            // 获取当前类中定义的字段
+            Field[] declaredFields = clazz.getDeclaredFields();
+            // 获取指定名称的类中定义的字段
+            Field nameField = clazz.getDeclaredField("name");
+            // 获取字段的修饰符
+            int modifiers = nameField.getModifiers();
+            // 指定字段强制访问
+            nameField.setAccessible(true);
+            // 修改字段你的值
+            nameField.set(person,"咕泡");
+            // 静态字段赋值，静态字段没有对应的对象，传入null
+            nameField.set(null,"静态字段赋值");
+
+        类的方法操作
+            // 获取类中的所有的公有的方法 包括继承的方法
+            Method[] methods = clazz.getMethods();
+            // 获取类中的定义的所有方法
+            Method[] declaredMethods = clazz.getDeclaredMethods();
+            // 获取类中指定名称和参数的公有方法
+            Method say = clazz.getMethod("say", String.class);
+            // 获取类中定义的指定名称和参数的方法
+            Method say1 = clazz.getDeclaredMethod("say");
+            // 获取方法的修饰符
+            int modifiers1 = say.getModifiers();
+            // 指定对象进行成员方法的调用
+            Object 咕泡666 = say.invoke(person, "咕泡666");
+            say.setAccessible(true);// 指定方法的强制执行
+            // 静态方法调用，传入对象为 null
+            say.invoke(null);
+
+        构造器操作
+            Constructor[] cons = clazz.getConstructors();            //获取类中所有的公有构造器
+            Constructor[] cons1 = clazz.getDeclaredConstructors();       //获取类中所有的构造器
+            Constructor conNoParam= clazz.getDeclaredConstructor();       //获取类中无参的构造器
+            Constructor con= clazz.getDeclaredConstructor(String.class,String.class);   //获取类中有参构造
+            int modifers = con.getModifiers();             //获取构造器的修饰符
+            conNoParam.newInstance();              //构造器实例对象
+            con.setAccessible(true);                  //指定方法的强制访问
+            con.newInstance("abc","bbb");              //有参构造调用
+            Person.class.newInstance();                //class直接调用默认无参构造
+
+    反射破坏单例
+        public class Single{
+            private static Single instance = null;
+
+            private Single(){
+                if(instance != null)//反射可以调用私有的构造器，这里判断如果实例已经存在，就抛出异常，不允许调用私有的构造器
+                    throw new RuntimeException("instance allReady exists!");
+            }
+
+            public static Single getInstance(){
+                if(instance == null)
+                    instance = new Single();
+                return instance;
+            }
+        }
+
+    使用场景
+        JDBC
+        SpringIOC
+        jdbcTemplate
+        MyBatis
+        ......
