@@ -27,11 +27,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <artifactId>zookeeper</artifactId>
             <groupId>org.apache.zookeeper</groupId>
             <version>3.4.5</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.rabbitmq</groupId>
