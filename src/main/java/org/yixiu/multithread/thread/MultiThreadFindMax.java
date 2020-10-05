@@ -43,6 +43,7 @@ class FindMaxTask implements Callable<Integer>{
         this.end = end;
     }
 
+
     @Override
     public Integer call() throws Exception {
         int max = Integer.MIN_VALUE;

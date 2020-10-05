@@ -48,8 +48,8 @@
         获取类对象的四种方式
             Class clazz = Person.class;
             Class clazz2 = new Person().getClass();
-            Class clazz3 = Class.forName("com.example.demo.fashe.Person");
-            Class clazz4 = Demo02.class.getClassLoader().loadClass("com.example.demo.fashe.Person");
+            Class clazz3 = Class.forName("com.example.demo.Person");
+            Class clazz4 = Demo02.class.getClassLoader().loadClass("com.example.demo.Person");
 
         基本信息操作
             // 获取类的相关结构
@@ -74,7 +74,7 @@
             int modifiers = nameField.getModifiers();
             // 指定字段强制访问
             nameField.setAccessible(true);
-            // 修改字段你的值
+            // 修改字段的值
             nameField.set(person,"咕泡");
             // 静态字段赋值，静态字段没有对应的对象，传入null
             nameField.set(null,"静态字段赋值");

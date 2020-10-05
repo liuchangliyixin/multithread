@@ -61,7 +61,7 @@
             }
 
             /**
-             *  ?  super Number : 通用类型必须是Integer 到Object类型的对象
+             *  ?  super Integer : 通用类型必须是Integer 到Object类型的对象
              * @param list
              */
             public static void loop(List<? super Integer> list){
@@ -121,7 +121,7 @@
                 }
 
                 /**
-                 * 在静态方法中我们没法使用 类中定义的泛型
+                 * 在静态方法中我们没法使用 类中定义的泛型，所以需要在使用之前先声明 <K>
                  * @return
                  */
                 public static <K> K method3(){
