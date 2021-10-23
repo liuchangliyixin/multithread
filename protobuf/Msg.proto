@@ -1,11 +1,11 @@
 // [开始声明]
 syntax = "proto3";
  //定义protobuf的包名称空间
-package com.crazymakercircle.netty.protocol;
+package org.yixiu.multithread.netty.protocol;
 // [结束声明]
 
 // [开始 java 选项配置]
-option java_package = "com.crazymakercircle.netty.protocol";
+option java_package = "org.yixiu.multithread.netty.protocol";
 option java_outer_classname = "MsgProtos";
 // [结束 java 选项配置]
 

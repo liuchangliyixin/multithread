@@ -1,4 +1,4 @@
-package org.yixiu.multithread.netty.protobuf;
+package org.yixiu.multithread.netty.protocol.json;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.GsonBuilder;

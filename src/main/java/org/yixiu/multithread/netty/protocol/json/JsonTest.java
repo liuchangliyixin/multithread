@@ -1,4 +1,4 @@
-package org.yixiu.multithread.netty.protobuf;
+package org.yixiu.multithread.netty.protocol.json;
 
 public class JsonTest {
     public static void main(String[] args) {

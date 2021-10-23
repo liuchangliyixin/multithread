@@ -1,4 +1,4 @@
-package org.yixiu.multithread.netty.protobuf;
+package org.yixiu.multithread.netty.protocol.json;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
